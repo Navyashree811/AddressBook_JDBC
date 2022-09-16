@@ -12,34 +12,24 @@ public class AddressBookDBService {
 	static Connection con;
 	static ResultSet rs;
 
-	public static void updateData() throws Exception {
-		String qry = "update address_book set city = 'Udaipur' where firstName ='Navya'";
-		try {
-
-			con = ConnectionDB.createCP();
-
-			pstmt = con.prepareStatement(qry);
-			System.out.println("Data Update");
-
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static List<ContactPerson> fetchContactPersonList() throws Exception {
 
 		List<ContactPerson> details = new ArrayList<>();
 
-		String qry1 = "select * from address_book where firstName ='Navya';";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String qry = "select * from address_book where date between Cast('2020-01-01' as date) and date (now();)";
 		try {
 			con = ConnectionDB.createCP();
 
-			pstmt = con.prepareStatement(qry1);
+			pstmt = con.prepareStatement(qry);
 
 			rs = pstmt.executeQuery();
 
-			System.err.println("firstName-> " + "lastName-> " + "type-> " + "address-> " + "    city-> " + "state-> "
-					+ " zip-> " + "phoneNumber-> ");
+			System.err.println("firstName-> " + "lastName-> " + "type" + "address-> " + "    city-> " + "state-> "
+					+ " zip-> " + "phoneNumber-> " + "date -> ");
 
 			while (rs.next()) {
 				ContactPerson info = new ContactPerson();
@@ -62,11 +52,14 @@ public class AddressBookDBService {
 				String state = rs.getString(6);
 				info.setState(state);
 
-				Double zip = rs.getDouble(7);
+				long zip = rs.getLong(7);
 				info.setZip(zip);
 
-				Double phoneNumber = rs.getDouble(8);
+				long phoneNumber = rs.getLong(8);
 				info.setPhoneNumber(phoneNumber);
+
+				String date = rs.getString(9);
+				info.setDate(date);
 
 				details.add(info);
 				System.out.println(info.toString());
@@ -111,8 +104,6 @@ public class AddressBookDBService {
 	}
 
 	public static void main(String[] args) throws Exception {
-
-		AddressBookDBService.updateData();
 		AddressBookDBService.fetchContactPersonList();
 	}
 }
