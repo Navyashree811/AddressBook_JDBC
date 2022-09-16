@@ -10,7 +10,6 @@ public class ContactPerson {
 	private String state;
 	private double phoneNumber, zip;
 	private String email;
-	private String date;
 
 	public ContactPerson() {
 
@@ -100,14 +99,6 @@ public class ContactPerson {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	@Override
