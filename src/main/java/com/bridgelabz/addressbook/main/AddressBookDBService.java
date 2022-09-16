@@ -8,19 +8,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookDBService {
+	static PreparedStatement pstmt;
+	static Connection con;
+	static ResultSet rs;
+
+	public static void updateData() throws Exception {
+		String qry = "update address_book set city = 'Udaipur' where firstName ='Navya'";
+		try {
+
+			con = ConnectionDB.createCP();
+
+			pstmt = con.prepareStatement(qry);
+			System.out.println("Data Update");
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static List<ContactPerson> fetchContactPersonList() throws Exception {
 
 		List<ContactPerson> details = new ArrayList<>();
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		String qry = "select * from address_book";
+		String qry1 = "select * from address_book where firstName ='Navya';";
 		try {
 			con = ConnectionDB.createCP();
 
-			pstmt = con.prepareStatement(qry);
+			pstmt = con.prepareStatement(qry1);
 
 			rs = pstmt.executeQuery();
 
@@ -97,7 +111,8 @@ public class AddressBookDBService {
 	}
 
 	public static void main(String[] args) throws Exception {
+
+		AddressBookDBService.updateData();
 		AddressBookDBService.fetchContactPersonList();
 	}
-
 }
